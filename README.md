@@ -32,9 +32,6 @@ Prima di eseguire lo script, assicurati di avere installati i seguenti software:
 7. **Inizializzazione di Git e Push del Progetto:**
    - Viene inizializzato un repository Git locale, i file vengono aggiunti e committati. Successivamente, viene richiesto l'URL del repository Git remoto, e il progetto viene spinto al repository remoto utilizzando comandi Git.
 
-8. **Pulizia:**
-   - La cartella clonata "general-archetype" viene automaticamente rimossa.
-
 ## Nota
 
 Assicurati che il tuo sistema abbia le autorizzazioni necessarie per eseguire operazioni Git e scrivere nelle directory di destinazione.
