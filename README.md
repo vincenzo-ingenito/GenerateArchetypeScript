@@ -4,43 +4,39 @@ Questo script Bash automatizza il processo di creazione di un nuovo progetto Spr
 
 ## Prerequisiti
 
-Assicurati di avere installati i seguenti prerequisiti sul tuo sistema:
+Prima di eseguire lo script, assicurati di avere installati i seguenti software:
 
-- Git
-- Maven
+- **Git:** 
+- **Maven:** 
 
-## Uso
+## Passaggi dello Script
 
-1. Clona il repository "general-archetype":
+1. **Clonazione del Repository:**
+   - Il repository ["general-archetype"](https://github.com/vincenzo-ingenito/general-archetype.git) viene clonato utilizzando il comando `git clone`.
 
-    ```bash
-    ./your-script-name.sh
-    ```
+2. **Generazione dell'Archetipo:**
+   - Un archetipo Maven viene generato dal progetto utilizzando il comando `mvn archetype:create-from-project`.
 
-2. Segui le istruzioni per personalizzare il tuo nuovo progetto Spring Boot:
-    - Inserisci il `groupId` desiderato.
-    - Inserisci il `artifactId` desiderato.
-    - Inserisci l'URL del repository Git remoto.
+3. **Modifica del File "pom.xml":**
+   - Il file "pom.xml" viene modificato per cambiare il packaging da "maven-archetype" a "pom" utilizzando il comando `sed`.
 
-3. Lo script eseguirà le seguenti azioni:
-    - Clona il repository "general-archetype".
-    - Genera un archetipo Maven dal progetto.
-    - Modifica il file "pom.xml" per cambiare il packaging in "pom".
-    - Esegui 'clean install' per l'archetipo.
-    - Aggiorna il catalogo archetipo locale.
-    - Genera un nuovo progetto Spring Boot dall'archetipo.
-    - Inizializza un repository Git locale, aggiunge file, effettua commit delle modifiche.
-    - Aggiunge un repository Git remoto e spinge il progetto.
+4. **Build dell'Archetipo:**
+   - Viene eseguito 'clean install' per l'archetipo utilizzando il comando `mvn clean install`.
 
-4. Una volta completato, verrà visualizzato un messaggio di successo.
+5. **Aggiornamento dell'Indice Catalogo Locale:**
+   - L'indice del catalogo locale viene aggiornato utilizzando il comando `mvn archetype:crawl`.
 
-## Pulizia
+6. **Generazione del Progetto da Archetipo:**
+   - L'utente inserisce il `groupId` e il `artifactId`, quindi il nuovo progetto Spring Boot viene generato utilizzando il comando `mvn archetype:generate`.
 
-Lo script rimuoverà automaticamente la cartella clonata "general-archetype" dopo aver completato la configurazione del progetto.
+7. **Inizializzazione di Git e Push del Progetto:**
+   - Viene inizializzato un repository Git locale, i file vengono aggiunti e committati. Successivamente, viene richiesto l'URL del repository Git remoto, e il progetto viene spinto al repository remoto utilizzando comandi Git.
+
+8. **Pulizia:**
+   - La cartella clonata "general-archetype" viene automaticamente rimossa.
 
 ## Nota
 
 Assicurati che il tuo sistema abbia le autorizzazioni necessarie per eseguire operazioni Git e scrivere nelle directory di destinazione.
 
 **Importante:** Rivedi e personalizza lo script secondo necessità prima di eseguirlo nel tuo ambiente.
-
