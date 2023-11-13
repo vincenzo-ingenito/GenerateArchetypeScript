@@ -31,6 +31,18 @@ Prima di eseguire lo script, assicurati di avere installati i seguenti software:
 
 7. **Inizializzazione di Git e Push del Progetto:**
    - Viene inizializzato un repository Git locale, i file vengono aggiunti e committati. Successivamente, viene richiesto l'URL del repository Git remoto, e il progetto viene spinto al repository remoto utilizzando comandi Git.
+  
+## Esecuzione dello script
+
+Prima di eseguire lo script, seleziona il linguaggio desiderato:
+   
+- [**Script Bash (Linux/macOS):**](generate_archetype.sh)
+  ```bash
+  ./generate_archetype.sh
+
+- [**Script Powershell (Windows):**](generate_archetype.ps)
+  ```bash
+  ./generate_archetype.ps
 
 ## Nota
 
