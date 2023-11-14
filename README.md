@@ -40,7 +40,7 @@ Prima di eseguire lo script, seleziona il linguaggio desiderato:
   ```bash
   ./generate_archetype.sh
 
-- [**Script Powershell (Windows):**](generate_archetype.ps)
+- [**Script Powershell (Windows):**](generate_archetype.ps1)
   ```bash
   ./generate_archetype.ps
 
