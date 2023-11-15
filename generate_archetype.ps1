@@ -1,53 +1,64 @@
-# Check if the "general-archetype" folder exists and delete it if it does
-if (Test-Path -Path "general-archetype" -PathType Container) {
-    Write-Host "Removing existing 'general-archetype' folder..."
-    Remove-Item -Path "general-archetype" -Recurse -Force
+# Verifica se la cartella "general-archetype" esiste e cancellala se presente
+if (Test-Path "general-archetype") {
+    Write-Host "Rimozione della cartella 'general-archetype' esistente..."
+    Remove-Item -Recurse -Force "general-archetype"
 }
 
-Write-Host "Git clone"
+Write-Host "Clonazione del repository Git"
 git clone https://github.com/vincenzo-ingenito/general-archetype.git
 
-Write-Host "Change folder general-archetype"
-Set-Location -Path "general-archetype" -ErrorAction Stop
+Write-Host "Cambio cartella a general-archetype"
+Set-Location "general-archetype"
 
-Write-Host "Generazione archetipo"
+Write-Host "Generazione dell'archetipo"
 mvn archetype:create-from-project
 
-Write-Host "Change to generated archetype directory"
-Set-Location -Path "target/generated-sources/archetype" -ErrorAction Stop
+Write-Host "Cambio alla directory dell'archetipo generato"
+Set-Location "target/generated-sources/archetype"
 
 # Esegui 'clean install' per l'archetipo
-Write-Host "Running 'clean install' for the archetype..."
+Write-Host "Eseguo 'clean install' per l'archetipo..."
 mvn clean install
 
 # Installa l'archetipo nel repository locale
-Write-Host "Installing archetype in the local repository..."
+Write-Host "Installazione dell'archetipo nel repository locale..."
 mvn install
 
-Write-Host "aggiorno indice catalogo locale"
+Write-Host "Aggiornamento dell'indice catalogo locale"
 mvn archetype:update-local-catalog
 
 # Modifica il file pom.xml per cambiare il packaging
-$file_path = "pom.xml"
-$old_string = "<packaging>maven-archetype</packaging>"
-$new_string = "<packaging>pom</packaging>"
-(Get-Content -Path $file_path) | ForEach-Object { $_ -replace $old_string, $new_string } | Set-Content -Path $file_path
+$filePath = "pom.xml"
+$oldString = "<packaging>maven-archetype</packaging>"
+$newString = "<packaging>pom</packaging>"
+(Get-Content $filePath) -replace [regex]::Escape($oldString), $newString | Set-Content $filePath
 
-Write-Host "Genero progetto da archetipo"
-$group_id = Read-Host "Inserisci il groupId"
-$artifact_name = Read-Host "Inserisci il nome dell'artifact"
-mvn archetype:generate -DarchetypeCatalog=local -DgroupId="$group_id" -DartifactId="$artifact_name"
+Write-Host "Generazione del progetto dall'archetipo"
+$groupId = Read-Host "Inserisci il groupId"
+$artifactName = Read-Host "Inserisci il nome dell'artifact"
+mvn archetype:generate -DarchetypeCatalog=local -DgroupId=$groupId -DartifactId=$artifactName
 
-Set-Location -Path $artifact_name -ErrorAction Stop
+Set-Location $artifactName
 
+Write-Host "Inizializzazione del repository Git"
 git init
 git add .
 git commit -m "Inizializzo il nuovo progetto Spring Boot"
 
-# Prompt for the remote repository URL
-$remote_url = Read-Host "Inserisci l'URL del repository remoto"
-git remote add origin $remote_url
-git push -u origin main
+# Prompt per l'URL del repository remoto
+$remoteUrl = Read-Host "Inserisci l'URL del repository remoto"
 
-# Se tutto va bene, stampa il messaggio di successo e attendi l'input dell'utente
-Read-Host "Progetto Spring Boot $artifact_name creato e pushato con successo! Premi INVIO per continuare."
+# Chiedi all'utente se vuole effettuare il push su GitHub
+$pushChoice = Read-Host "Vuoi pushare il nuovo progetto su GitHub? (s/n)"
+
+if ($pushChoice -eq "s") {
+    git remote add origin $remoteUrl
+    git push -u origin main
+
+    # Se tutto va bene, stampa il messaggio di successo e attendi l'input dell'utente
+    Write-Host "Progetto Spring Boot $artifactName creato e pushato con successo! Percorso attuale: $(Get-Location). Premi INVIO per continuare."
+} else {
+    # Se l'utente sceglie di non pushare, chiudi la shell
+    Write-Host "Il progetto è stato creato ma non è stato pushato su GitHub. Chiudo la shell. Percorso attuale: $(Get-Location)."
+    exit
+}
